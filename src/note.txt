@@ -1,0 +1,2 @@
+https://vitejs.dev/guide/
+https://www.npmjs.com/~polkadotjs - all polkadotjs npm packages
