@@ -1,2 +1,26 @@
 https://vitejs.dev/guide/
 https://www.npmjs.com/~polkadotjs - all polkadotjs npm packages
+
+https://polkadotjs.onrender.com - app url
+gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj - talisman dot
+gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj
+
+
+1) Install polkadotjs/api
+  * We need RPC or Parachain to interact with
+
+  - WsProvider is Web Sucket Provider
+  - bigNumber - BNJS in polkadot
+  - immediately invoked function expression (IIFE)
+
+
+  Building a dApp with polkadot.js, React and Typescript: 3 - How to interact with the wallet
+  - Application structure is at ./noteImages/dapp-structure image.JPG
+
+  * Things needed from the user:
+      - Address
+      - Signature - we use extension dapp
+  
+
+
+  
