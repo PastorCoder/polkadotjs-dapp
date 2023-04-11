@@ -19,8 +19,15 @@ gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj
 
   * Things needed from the user:
       - Address
-      - Signature - we use extension dapp
-  
+      - Signature - we use extension dapp to get Things
+  - Install the following:
+      - @polkadot/extension-inject@0.34.0-beta.12 
+      - @polkadot/extension-dapp
+  - create two states: accounts and selectedAccount
+  - Check if the user has web3 wallet by using web3Enable(NAME) where name is the name of the Dapp. web3Enable is from @polkadot/extension-dapp
+  * I was trying to detect my talisman wallet in my app, all the code seemed very correct but it was not detecting 
+    my wallet extension, i was on this issue for four hours and i couldnt solve it, i was sorely discouraged, as 
+    i continued in the tutorial the tutor had the same issue and all he did was to change the address on the 
+    address bar from http://127.0.0.1:5173/ to http://localhost:5173/. I felt so foolish(10/4/2023).
 
 
-  
