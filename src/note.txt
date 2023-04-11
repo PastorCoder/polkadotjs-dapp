@@ -2,6 +2,7 @@ https://vitejs.dev/guide/
 https://www.npmjs.com/~polkadotjs - all polkadotjs npm packages
 
 https://polkadotjs.onrender.com - app url
+https://app.gmordie.com/leaderboard
 gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj - talisman dot
 gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj
 

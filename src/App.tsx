@@ -6,11 +6,14 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 
 const NAME = "GmOrDie";
+type period = "MORNING | NIGHT | EVENING | AFTERNOON";
+
 
 const App = () => {
   const [api, setApi] = useState<ApiPromise>();
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
+  const [period, setPeriod] = useState<period>()
 
   const setup = async () => {
     const wsProvider = new WsProvider("wss://ws.gm.bldnodes.org/");
@@ -67,10 +70,19 @@ const App = () => {
 
     (
       async () => {
-        const time = await api.query.timestamp.now();
-        // console.log(time.toPrimitive())
+        const period = (await api.query.currencies.currentTimePeriod()).toPrimitive() as string;
+
+        const parsedPeriod = period.toUpperCase() as period;
+        setPeriod(parsedPeriod);
+        console.log(period)
       }
     )();
+    // (
+    //   async () => {
+    //     const time = await api.query.timestamp.now();
+    //     console.log(time.toPrimitive())
+    //   }
+    // )();
    }, [api]);
 
   return (
@@ -88,7 +100,7 @@ const App = () => {
         </>) : null}
 
       {/**{accounts.length > 0 && selectedAccount ? selectedAccount.address : null} */}
-      {selectedAccount ? selectedAccount.address : null}
+      {selectedAccount ? <>{period}</> : null}
     </div>
   )
 }
