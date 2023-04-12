@@ -1,12 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { WsProvider, ApiPromise } from '@polkadot/api';
 
-import { web3Enable, web3Accounts } from "@polkadot/extension-dapp";
+import { web3Enable, web3Accounts, web3FromAddress } from "@polkadot/extension-dapp";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
+import BN from "bn.js";
 
 
 const NAME = "GmOrDie";
-type period = "MORNING | NIGHT | EVENING | AFTERNOON";
+type period = "MORNING | NIGHT | MIDONE | MIDTWO";
+const AMOUNT = new BN(10).mul(new BN(10).pow(new BN(10)))
 
 
 const App = () => {
@@ -57,10 +59,24 @@ const App = () => {
   };
 
 
+  const handleBurn = async () => { 
+    if (!api) return;
+
+    if (!selectedAccount) return;
+
+    const injector = await web3FromAddress(selectedAccount.address);
+
+    await api.tx.currencies.burnFren(AMOUNT).signAndSend(selectedAccount.address, {
+      signer: injector.signer
+    }); //FREN : Unknown word
+  };
+
+
 
 
 
   useEffect(() => {
+    console.log(AMOUNT.toString());
     setup();
   }, []);
   
@@ -95,12 +111,12 @@ const App = () => {
             <option value="" disabled selected hidden>
               Choose your account
             </option>
-          {accounts.map((account) => <option value={account.address}>{account.address}</option>)}
+          {accounts.map((account) => <option value={account.address}>{account.meta.name || account.address}</option>)}
         </select>
         </>) : null}
 
       {/**{accounts.length > 0 && selectedAccount ? selectedAccount.address : null} */}
-      {selectedAccount ? <>{period}</> : null}
+      {selectedAccount ? <button onClick={handleBurn}>Burn 10 $FREN</button> : null}
     </div>
   )
 }

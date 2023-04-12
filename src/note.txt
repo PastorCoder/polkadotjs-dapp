@@ -32,3 +32,9 @@ gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj
     address bar from http://127.0.0.1:5173/ to http://localhost:5173/. I felt so foolish(10/4/2023).
 
 
+  Building a dApp with polkadot.js, React and Typescript: 5 - How to make extrinsic calls
+    - making extrinsic call
+      - Install bn.js
+      - Extrinsic calls have to be signed
+
+
