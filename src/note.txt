@@ -38,3 +38,12 @@ gMWbWWvZtSt6ybuVW4YYKwh6RhLfskDp61k66C4PaXJsjqaUj
       - Extrinsic calls have to be signed
 
 
+
+
+  Building a dApp with polkadot.js, React and Typescript: 6 - How to make subscriptions
+     - The best way of getting updated data on the UI is over the web sucket not http
+     - when you make RPC(Remote Procedural Call) you get the data in the blockchain,
+       and as the data changes on the chain, you get the updated version on your ui in real time
+     - subscriptions
+
+

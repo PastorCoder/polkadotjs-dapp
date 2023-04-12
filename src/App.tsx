@@ -16,6 +16,10 @@ const App = () => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
   const [period, setPeriod] = useState<period>()
+  const [balance, setBalance] = useState<BN>();
+
+
+
 
   const setup = async () => {
     const wsProvider = new WsProvider("wss://ws.gm.bldnodes.org/");
@@ -87,6 +91,7 @@ const App = () => {
     (
       async () => {
         const period = (await api.query.currencies.currentTimePeriod()).toPrimitive() as string;
+       
 
         const parsedPeriod = period.toUpperCase() as period;
         setPeriod(parsedPeriod);
@@ -99,7 +104,23 @@ const App = () => {
     //     console.log(time.toPrimitive())
     //   }
     // )();
-   }, [api]);
+  }, [api]);
+
+
+  useEffect(() => {
+    if (!api) return;
+    if (!selectedAccount) return;
+
+    api.query.system.account(selectedAccount.address, ({ data: { free } }: { data: { free: BN } }) => {
+      setBalance(free);
+    }
+    );
+
+
+  },[api, selectedAccount]);
+  
+
+
 
   return (
     <div>
@@ -116,7 +137,11 @@ const App = () => {
         </>) : null}
 
       {/**{accounts.length > 0 && selectedAccount ? selectedAccount.address : null} */}
-      {selectedAccount ? <button onClick={handleBurn}>Burn 10 $FREN</button> : null}
+      {selectedAccount ?
+        <>
+          <button onClick={handleBurn}>Burn 10 $FREN</button>
+          <span>BALANCE: {balance?.toNumber()}</span>
+      </> : null}
     </div>
   )
 }
