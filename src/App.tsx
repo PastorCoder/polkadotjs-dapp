@@ -1,12 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { WsProvider, ApiPromise } from '@polkadot/api';
 
-import { web3Enable, web3Accounts } from "@polkadot/extension-dapp";
+import { web3Enable, web3Accounts, web3FromAddress } from "@polkadot/extension-dapp";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
+import BN from "bn.js";
 
 
 const NAME = "GmOrDie";
-type period = "MORNING | NIGHT | EVENING | AFTERNOON";
+type period = "MORNING | NIGHT | MIDONE | MIDTWO";
+const AMOUNT = new BN(10).mul(new BN(10).pow(new BN(10)))
 
 
 const App = () => {
@@ -14,6 +16,10 @@ const App = () => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
   const [period, setPeriod] = useState<period>()
+  const [balance, setBalance] = useState<BN>();
+
+
+
 
   const setup = async () => {
     const wsProvider = new WsProvider("wss://ws.gm.bldnodes.org/");
@@ -57,10 +63,24 @@ const App = () => {
   };
 
 
+  const handleBurn = async () => { 
+    if (!api) return;
+
+    if (!selectedAccount) return;
+
+    const injector = await web3FromAddress(selectedAccount.address);
+
+    await api.tx.currencies.burnFren(AMOUNT).signAndSend(selectedAccount.address, {
+      signer: injector.signer
+    }); //FREN : Unknown word
+  };
+
+
 
 
 
   useEffect(() => {
+    console.log(AMOUNT.toString());
     setup();
   }, []);
   
@@ -71,6 +91,7 @@ const App = () => {
     (
       async () => {
         const period = (await api.query.currencies.currentTimePeriod()).toPrimitive() as string;
+       
 
         const parsedPeriod = period.toUpperCase() as period;
         setPeriod(parsedPeriod);
@@ -83,7 +104,23 @@ const App = () => {
     //     console.log(time.toPrimitive())
     //   }
     // )();
-   }, [api]);
+  }, [api]);
+
+
+  useEffect(() => {
+    if (!api) return;
+    if (!selectedAccount) return;
+
+    api.query.system.account(selectedAccount.address, ({ data: { free } }: { data: { free: BN } }) => {
+      setBalance(free);
+    }
+    );
+
+
+  },[api, selectedAccount]);
+  
+
+
 
   return (
     <div>
@@ -95,12 +132,16 @@ const App = () => {
             <option value="" disabled selected hidden>
               Choose your account
             </option>
-          {accounts.map((account) => <option value={account.address}>{account.address}</option>)}
+          {accounts.map((account) => <option value={account.address}>{account.meta.name || account.address}</option>)}
         </select>
         </>) : null}
 
       {/**{accounts.length > 0 && selectedAccount ? selectedAccount.address : null} */}
-      {selectedAccount ? <>{period}</> : null}
+      {selectedAccount ?
+        <>
+          <button onClick={handleBurn}>Burn 10 $FREN</button>
+          <span>BALANCE: {balance?.toNumber()}</span>
+      </> : null}
     </div>
   )
 }
